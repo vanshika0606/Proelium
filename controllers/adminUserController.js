@@ -53,10 +53,11 @@ exports.register = async (req, res, next) => {
   }
 };
 
+
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await adminUser.findOne({ email });
+  const user = await adminUser.findOne({ email }).select("+password");
 
   if (!user) {
     return res.status(404).json({
@@ -102,6 +103,7 @@ exports.logout = async (req, res, next) => {
   });
 };
 
+
 exports.Add = async (req, res, next) => {
   const { email } = req.body;
 
@@ -145,3 +147,21 @@ exports.Add = async (req, res, next) => {
     });
   }
 };
+
+
+exports.View = async (req, res, next) => {
+
+    var user;
+    
+    user=await adminUser.find();
+    if(req.user.role==="user"){
+        user=await adminUser.find({role:'user'});
+    }
+
+    res.status(200).json({
+        user,
+        msg:'Data is here'
+    })
+
+
+}
