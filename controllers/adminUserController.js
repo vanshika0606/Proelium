@@ -1,3 +1,4 @@
+const { findOne, findById } = require("../model/adminUserModel");
 const adminUser = require("../model/adminUserModel");
 
 exports.register = async (req, res, next) => {
@@ -25,7 +26,17 @@ exports.register = async (req, res, next) => {
       }));
     }
 
+    
+
+    
+    
+
     user = await adminUser.create(req.body);
+
+    var createdTime = new Date()
+    createdTime = createdTime.toDateString()
+
+    user.createdTime = createdTime
 
     const token = user.getJWToken();
     
@@ -161,6 +172,43 @@ exports.View = async (req, res, next) => {
     res.status(200).json({
         user,
         msg:'Data is here'
+    })
+
+
+}
+
+
+exports.update= async(req,res,next)=>{
+
+    var user = await findById(req.params.id)
+
+    if(!user){
+
+        return ( res.status(404).json({
+            success:true,
+            message:"not found",
+            
+          })
+          )
+    }
+
+    
+    
+    user = await findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+      });
+
+      var updatedTime = new Date();
+
+    updatedTime= updatedTime.toDateString()
+
+    user.updatedTime= updatedTime
+
+    res.status(200).json({
+        user,
+        msg:'updated successfully'
     })
 
 

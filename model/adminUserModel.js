@@ -35,10 +35,12 @@ const adminUserSchema = new mongoose.Schema({
         
     },
     createdTime:{
-
+        type:String,
+       
     },
     updatedTime:{
-
+        type:String,
+        
     },
     resetPasswordToken:String,
     resetPasswordExpire:Date,
